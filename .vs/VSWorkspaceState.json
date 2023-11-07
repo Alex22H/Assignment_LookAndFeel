@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\css",
+    "\\html",
+    "\\img"
   ],
-  "SelectedNode": "\\C:\\Users\\Alexa\\OneDrive\\Desktop\\DISRepos\\Assignment 3",
+  "SelectedNode": "\\css\\StyleSheet_common.css",
   "PreviewInSolutionExplorer": false
 }
