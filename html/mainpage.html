@@ -92,6 +92,27 @@
                     },
                     legend: {
                         display: true
+                    },
+                    onClick: function (event, elements) {
+                        if (elements.length > 0) {
+                            // Get the label of the clicked bar
+                            const index = elements[0]._index;
+
+                            // Define the URLs to link to for each label (customize as needed)
+                            const connection = {
+                                0: "details.html",
+                                1: "details.html",
+                                2: "details.html",
+                                3: "details.html",
+                                4: "details.html",
+                                5: "details.html"
+                            };
+                            // Construct the URL to the associated HTML file
+                            const url = connection[index];
+
+                            // Open the associated HTML file in a new tab or window
+                            window.open(url, '_blank');
+                        }
                     }
                 }
             });

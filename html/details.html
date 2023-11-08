@@ -97,12 +97,12 @@
 
 <!-- Details page content -->
   <div class="paragraph">
-    Electric Vehicles Details by County
+    Electric Vehicles Details by Regional County
   </div>
 
 <div class="page-summary">
 
-    <p>Use the county selection dropdown to choose a specific region of interest, and click the "Fetch Details" button to access comprehensive information about the EVs available in that county. 
+    <p>Use the region selection dropdown to choose a specific region of interest, and click the "Fetch Details" button to access comprehensive information about the EVs in that region's counties. 
 
 
       The data table displays details such as the make, model, and electric range, and total number of each electric vehicle in every county of Washington, allowing you to make informed choices and explore the diversity of EVs in Washington State.</p>
@@ -111,19 +111,20 @@
         <div class="container">
             
             <div class="search-container">
-                <label for="countyName">Select County:</label>
-                <select id="countyName">
-		    <option value="">Select County</option>
-                    <option value="Yakima">Yakima</option>
-                    <option value="King">King</option>
-                    <option value="Island">Island</option>
-                    <option value="Snohomish">Snohomish</option>
-                    <option value="Kitsap">Kitsap</option>
+                <label for="regionName">Select Region:</label>
+                <select id="regionName">
+                    <option value="">Select Region</option>
+                    <option value="Olympic">Olympic</option>
+                    <option value="Northeast">Northeast</option>
+                    <option value="Northwest">Northwest</option>
+                    <option value="South Puget Sound">South Puget Sound</option>
+                    <option value="Pacific Cascade">Pacific Cascade</option>
+                    <option value="Southeast">Southeast</option>
                 </select>
-                <button onclick="fetchCountyDetails()">Fetch Details</button>
+                <button onclick="fetchRegionDetails()">Fetch Details</button>
             </div>
 
-            <div id="countyData">
+            <div id="regionData">
                 <table>
                     <thead>
                         <tr>
@@ -131,6 +132,7 @@
                             <th>Make</th>
                             <th>Model</th>
                             <th>Electric Range</th>
+                            <th>Total EVs</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,79 +146,97 @@
     <script>
         // Sample data representing electric vehicles by county
         const electricVehiclesData = [
-  {
-    county: 'Yakima',
-    vehicles: [
-      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
-      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 100 },
-      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 150 },
-      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 100 },
-      { make: 'BMW', model: 'X5', range: '180 miles', "Total Count": 120 },
-      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
-    ],
-  },
-  {
-    county: 'King',
-    vehicles: [
-      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
-      { make: 'Tesla', model: 'Model S', range: '250 miles', "Total Count": 120 },
-      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
-      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
-      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
-      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
-    ],
-  },
-  {
-    county: 'Island',
-    vehicles: [
-      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
-      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
-      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
-      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
-      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
-      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
-    ],
-  },
-  {
-    county: 'Snohomish',
-    vehicles: [
-      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
-      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
-      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
-      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
-      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
-      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
-    ],
-  },
-  {
-    county: 'Kitsap',
-    vehicles: [
-      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
-      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
-      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
-      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
-      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
-      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
-    ],
-  },
-];
+            {
+                region: 'Olympic',
+                counties: [
+                    {
+                        name: 'Yakima',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 100 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 150 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 100 },
+                            { make: 'BMW', model: 'X5', range: '180 miles', "Total Count": 120 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                        ]
+                    },
+                    {
+                        name: 'King',
+                        vehicles: [
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                            { make: 'Tesla', model: 'Model S', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+                        ]
+                    }
+                ]
+            },
+            {
+                region: 'Northeast',
+                counties: [
+                    {
+                        name: 'Island',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+                        ]
+                    },
+                    {
+                        name: 'Snohomish',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+                        ]
+                    }
+                ]
+            },
+            {
+                region: 'Northwest',
+                counties: [
+                    {
+                        name: 'Kitsap',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+                        ]
+                    }
+                ]
+            }
+        ];
 
 
-        function populateTable(county) {
+        function populateTable(region) {
             const tableBody = document.querySelector("tbody");
             tableBody.innerHTML = ""; // Clear existing rows
 
-            electricVehiclesData.forEach(data => {
-                if (data.county.toLowerCase() === county.toLowerCase()) {
-                    data.vehicles.forEach(vehicle => {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${data.county}</td>
-                            <td>${vehicle.make}</td>
-                            <td>${vehicle.model}</td>
-                            <td>${vehicle.range}</td>
-                        `;
-                        tableBody.appendChild(row);
+            electricVehiclesData.forEach(regionData => {
+                if (regionData.region.toLowerCase() === region.toLowerCase()) {
+                    regionData.counties.forEach(county => {
+                        county.vehicles.forEach(vehicle => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                        <td>${county.name}</td>
+                        <td>${vehicle.make}</td>
+                        <td>${vehicle.model}</td>
+                        <td>${vehicle.range}</td>
+                        <td>${vehicle["Total Count"]}</td>
+                    `;
+                            tableBody.appendChild(row);
+                        });
                     });
                 }
             });
@@ -226,10 +246,10 @@
             table.style.visibility = "visible";
         }
 
-        function fetchCountyDetails() {
-            const countyInput = document.getElementById("countyName");
-            const countyName = countyInput.value;
-            populateTable(countyName);
+        function fetchRegionDetails() {
+            const regionInput = document.getElementById("regionName");
+            const regionName = regionInput.value;
+            populateTable(regionName);
         }
     </script>
 </body>
