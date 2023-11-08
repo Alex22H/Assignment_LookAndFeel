@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/StyleSheetFormatting.css">
     <link rel="stylesheet" href="../css/StyleSheet_common.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+
+    <style>
+        .main{
+            align-content:center;
+            margin-top:55px;
+            text-align:center;
+        }
+    </style>
+
+
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -31,8 +42,61 @@
         </div>
     </nav>
 
+    <div class="main">
+        <h1>Electric Vehicles in Washington State</h1>
 
+        <p style="max-width:1000px; margin: auto;">
+            <canvas id="stackedbarchart" width="800" height="400"></canvas>
+        </p>
 
+        <script>
+            new Chart(document.getElementById("stackedbarchart"), {
+                type: 'horizontalBar',
+                data: {
+                    labels: ["Olympic", "Northwest", "Northeast", " South Puget Sound", "Pacific Cascade", "Southeast"],
+                    datasets: [
+                        {
+                            label: "Tesla",
+                            backgroundColor: "#3e95cd",
+                            data: [134, 242, 152, 605, 3970, 1684]
+                        },
+                        {
+                            label: "Nissan",
+                            backgroundColor: "#8e5ea2",
+                            data: [35, 31, 39, 146, 661, 618]
+                        },
+                        {
+                            label: "Chevrolet",
+                            backgroundColor: "#3cba9f",
+                            data: [22, 70, 90, 217, 504, 515]
+                        },
+                        {
+                            label: "Ford",
+                            backgroundColor: "#e8c3b9",
+                            data: [27, 42, 71, 113, 304, 316]
+                        },
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                stacked: true
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                stacked: true
+                            }
+                        ]
+                    },
+                    legend: {
+                        display: true
+                    }
+                }
+            });
+        </script>
+    </div>
 
 
     <!-- Footer -->
