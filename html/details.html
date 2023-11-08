@@ -28,7 +28,6 @@
     text-align: center;
     font-size: 15px;
     font-color: black;
-   
 
 }
         .container {
@@ -55,8 +54,8 @@
             text-align: center;
         }
 
-      .search-container {
-         text-align: center;
+        .search-container {
+            text-align: center;
             padding: 20px;
         }
 
@@ -102,10 +101,11 @@
 
 <div class="page-summary">
 
-    <p>Use the region selection dropdown to choose a specific region of interest, and click the "Fetch Details" button to access comprehensive information about the EVs in that region's counties. 
-
-
-      The data table displays details such as the make, model, and electric range, and total number of each electric vehicle in every county of Washington, allowing you to make informed choices and explore the diversity of EVs in Washington State.</p>
+    <p>Use the region selection dropdown to choose a specific region of interest, and click the "Fetch Details" 
+    button to access comprehensive information about the EVs in that region's counties. 
+    The data table displays details such as the make, model, and electric range, and total number 
+    of each electric vehicle in every county of Washington, allowing you to make informed choices and explore 
+    the diversity of EVs in Washington State.</p>
 </div>
 
         <div class="container">
@@ -142,6 +142,7 @@
             </div>
         </div>
     </div>
+
 
     <script>
         // Sample data representing electric vehicles by county
@@ -215,17 +216,101 @@
                         ]
                     }
                 ]
+            },
+            {
+                region: 'South Puget Sound',
+                counties: [
+                    {
+                        name: 'Douglas',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 100 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 150 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 100 },
+                            { make: 'BMW', model: 'X5', range: '180 miles', "Total Count": 120 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                        ]
+                    },
+                    {
+                        name: 'Pierce',
+                        vehicles: [
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                            { make: 'Tesla', model: 'Model S', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+                        ]
+                    }
+                ]
+            },
+            {
+                region: 'Pacific Cascade',
+                counties: [
+                    {
+                        name: 'Clark',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+                        ]
+                    },
+                    {
+                        name: 'Thurston',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+                        ]
+                    }
+                ]
+            },
+            {
+                region: 'Southeast',
+                counties: [
+                    {
+                        name: 'Spokane',
+                        vehicles: [
+                            { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+                            { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+                            { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+                            { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+                            { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+                            { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+                        ]
+                    }
+                ]
             }
         ];
 
+        // collect value from main page if clicked
+        document.addEventListener("DOMContentLoaded", function () {
+            // Parse the query parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedRegion = urlParams.get("region");
+
+            // Set the select object to the specified region
+            const regionSelect = document.getElementById("regionName");
+            if (selectedRegion) {
+                regionSelect.value = selectedRegion;
+                // Fetch details for the selected region automatically
+                fetchRegionDetails(selectedRegion);
+            }
+        });
 
         function populateTable(region) {
             const tableBody = document.querySelector("tbody");
             tableBody.innerHTML = ""; // Clear existing rows
 
-            electricVehiclesData.forEach(regionData => {
-                if (regionData.region.toLowerCase() === region.toLowerCase()) {
-                    regionData.counties.forEach(county => {
+            electricVehiclesData.forEach(data => {
+                if (data.region.toLowerCase() === region.toLowerCase()) {
+                    data.counties.forEach(county => {
                         county.vehicles.forEach(vehicle => {
                             const row = document.createElement("tr");
                             row.innerHTML = `
