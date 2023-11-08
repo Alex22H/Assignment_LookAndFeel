@@ -1,11 +1,73 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/StyleSheetFormatting.css">
     <link rel="stylesheet" href="../css/StyleSheet_common.css">
+    <style>
+       
+   body {
+    font: 400 15px/1.8 Lato, sans-serif;
+    color: #777;
+  }
+
+.paragraph {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-weight: bold; 
+    font-color: black;
+    font-size: 30px;
+    margin-bottom: 50px; 
+    line-height: 2; 
+    padding: 20px;
+  }
+
+.page-summary{
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 15px;
+    font-color: black;
+   
+
+}
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        #countyData {
+            flex: 1;
+            overflow-y: auto;
+        }
+    
+
+	table {
+            width: 100%;
+            visibility: hidden;
+            align-items: center;
+            padding: 20px;
+            border-collapse: collapse; /* Add border collapse for the table */
+        }
+
+        table, th, td {
+            border: 1px solid black; /* Add borders to table cells */
+            text-align: center;
+        }
+
+      .search-container {
+         text-align: center;
+            padding: 20px;
+        }
+
+	.title {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+
+    <title>Electric Vehicles Details by County</title>
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -31,12 +93,144 @@
         </div>
     </nav>
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
-            <span class="glyphicon glyphicon-chevron-up"></span>
-        </a><br><br>
-    </footer>
+    <div id="home" class="page">
 
+<!-- Details page content -->
+  <div class="paragraph">
+    Electric Vehicles Details by County
+  </div>
+
+<div class="page-summary">
+
+    <p>Use the county selection dropdown to choose a specific region of interest, and click the "Fetch Details" button to access comprehensive information about the EVs available in that county. 
+
+
+      The data table displays details such as the make, model, and electric range, and total number of each electric vehicle in every county of Washington, allowing you to make informed choices and explore the diversity of EVs in Washington State.</p>
+</div>
+
+        <div class="container">
+            
+            <div class="search-container">
+                <label for="countyName">Select County:</label>
+                <select id="countyName">
+		    <option value="">Select County</option>
+                    <option value="Yakima">Yakima</option>
+                    <option value="King">King</option>
+                    <option value="Island">Island</option>
+                    <option value="Snohomish">Snohomish</option>
+                    <option value="Kitsap">Kitsap</option>
+                </select>
+                <button onclick="fetchCountyDetails()">Fetch Details</button>
+            </div>
+
+            <div id="countyData">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>County</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Electric Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data representing electric vehicles by county
+        const electricVehiclesData = [
+  {
+    county: 'Yakima',
+    vehicles: [
+      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 100 },
+      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 150 },
+      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 100 },
+      { make: 'BMW', model: 'X5', range: '180 miles', "Total Count": 120 },
+      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+    ],
+  },
+  {
+    county: 'King',
+    vehicles: [
+      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+      { make: 'Tesla', model: 'Model S', range: '250 miles', "Total Count": 120 },
+      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+    ],
+  },
+  {
+    county: 'Island',
+    vehicles: [
+      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 200 },
+      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 10 },
+      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 220 },
+      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 140 },
+      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 90 },
+      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 110 },
+    ],
+  },
+  {
+    county: 'Snohomish',
+    vehicles: [
+      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+    ],
+  },
+  {
+    county: 'Kitsap',
+    vehicles: [
+      { make: 'Tesla', model: 'Model 3', range: '250 miles', "Total Count": 120 },
+      { make: 'Nissan', model: 'Leaf', range: '150 miles', "Total Count": 140 },
+      { make: 'Chevrolet', model: 'Bolt EV', range: '259 miles', "Total Count": 120 },
+      { make: 'Ford', model: 'MUSTANG MACH-E', range: '160 miles', "Total Count": 40 },
+      { make: 'Kia', model: 'NIRO', range: '100 miles', "Total Count": 110 },
+      { make: 'BMW', model: 'X5', range: '130 miles', "Total Count": 200 },
+    ],
+  },
+];
+
+
+        function populateTable(county) {
+            const tableBody = document.querySelector("tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            electricVehiclesData.forEach(data => {
+                if (data.county.toLowerCase() === county.toLowerCase()) {
+                    data.vehicles.forEach(vehicle => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${data.county}</td>
+                            <td>${vehicle.make}</td>
+                            <td>${vehicle.model}</td>
+                            <td>${vehicle.range}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            });
+
+            // Show the table after populating data
+            const table = document.querySelector("table");
+            table.style.visibility = "visible";
+        }
+
+        function fetchCountyDetails() {
+            const countyInput = document.getElementById("countyName");
+            const countyName = countyInput.value;
+            populateTable(countyName);
+        }
+    </script>
 </body>
 </html>
