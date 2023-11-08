@@ -53,7 +53,7 @@
             new Chart(document.getElementById("stackedbarchart"), {
                 type: 'horizontalBar',
                 data: {
-                    labels: ["Olympic", "Northwest", "Northeast", " South Puget Sound", "Pacific Cascade", "Southeast"],
+                    labels: ["Olympic", "Northwest", "Northeast", "South Puget Sound", "Pacific Cascade", "Southeast"],
                     datasets: [
                         {
                             label: "Tesla",
@@ -100,12 +100,12 @@
 
                             // Define the URLs to link to for each label (customize as needed)
                             const connection = {
-                                0: "details.html",
-                                1: "details.html",
-                                2: "details.html",
-                                3: "details.html",
-                                4: "details.html",
-                                5: "details.html"
+                                0: "details.html?region=Olympic",
+                                1: "details.html?region=Northwest",
+                                2: "details.html?region=Northeast",
+                                3: "details.html?region=South Puget Sound",
+                                4: "details.html?region=Pacific Cascade",
+                                5: "details.html?region=Southeast"
                             };
                             // Construct the URL to the associated HTML file
                             const url = connection[index];
